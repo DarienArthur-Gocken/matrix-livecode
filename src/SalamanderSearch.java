@@ -58,9 +58,7 @@ public class SalamanderSearch {
         visited[curR][curC] = true;
 
         for(int[] move : possibleMoves(enclosure, currentLoc)) {
-            if(canReach(move, enclosure, visited)) {
-                return true;
-            }
+            if(canReach(move, enclosure, visited)) return true;
         }
 
         return false;
