@@ -5,7 +5,7 @@ public class SalamanderSearch {
     public static void main(String[] args) {
         char[][] enclosure1 = {
             {'.','.','.','.','.','.'},
-            {'W','.','W','W','.','.'},
+            {'W','.','W','W','.','.'}, //{1, 4}
             {'.','.','W','.','.','W'},
             {'f','W','.','.','W','.'},
             {'W','.','W','s','.','.'},
@@ -44,6 +44,25 @@ public class SalamanderSearch {
      * @throws IllegalArgumentException if the enclosure does not contain a salamander
      */
     public static boolean canReach(char[][] enclosure) {
+        int[] startLocation = salamanderLocation(enclosure);
+        boolean[][] visited = new boolean[enclosure.length][enclosure[0].length];
+        return canReach(startLocation, enclosure, visited);
+    }
+
+    private static boolean canReach(int[] currentLoc, char[][] enclosure, boolean[][] visited) {
+        int curR = currentLoc[0];
+        int curC = currentLoc[1];
+        if(enclosure[curR][curC] == 'f') return true;
+        if(visited[curR][curC]) return false;
+
+        visited[curR][curC] = true;
+
+        for(int[] move : possibleMoves(enclosure, currentLoc)) {
+            if(canReach(move, enclosure, visited)) {
+                return true;
+            }
+        }
+
         return false;
     }
 
@@ -61,5 +80,40 @@ public class SalamanderSearch {
             }
         }
         throw new IllegalArgumentException("No salamander present");
+    }
+
+    public static List<int[]> possibleMoves(char[][] enclosure, int[] location) {
+        int curR = location[0];
+        int curC = location[1];
+
+        List<int[]> validLocs = new ArrayList<>();
+
+        //up
+        int newR = curR - 1;
+        int newC = curC;
+        if(newR >= 0 && enclosure[newR][newC] != 'W') {
+            validLocs.add(new int[]{newR, newC});
+        }
+        //down
+        newR = curR + 1;
+        newC = curC;
+        if(newR < enclosure.length && enclosure[newR][newC] != 'W') {
+            validLocs.add(new int[]{newR, newC});
+        }
+        //right
+        newR = curR;
+        newC = curC+1;
+        if(newC < enclosure[0].length && enclosure[newR][newC] != 'W') {
+            validLocs.add(new int[]{newR, newC});
+        }
+
+        //left
+        newR = curR;
+        newC = curC-1;
+        if(newC >= 0 && enclosure[newR][newC] != 'W') {
+            validLocs.add(new int[]{newR, newC});
+        }
+
+        return validLocs;
     }
 }
