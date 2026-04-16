@@ -46,4 +46,20 @@ public class SalamanderSearch {
     public static boolean canReach(char[][] enclosure) {
         return false;
     }
+
+    //return [rol, col] of where salamander is.
+    //throws illegalargumentexception if no salamander.
+    public static int[] salamanderLocation(char[][] enclosure) {
+        for(int r = 0; r < enclosure.length; r++) {
+            for(int c = 0; c < enclosure[r].length; c++) {
+                if(enclosure[r][c]=='s') {
+                    int[] salamanderLocation = new int[2];
+                    salamanderLocation[0] = r;
+                    salamanderLocation[1] = c;
+                    return salamanderLocation;
+                }
+            }
+        }
+        throw new IllegalArgumentException("No salamander present");
+    }
 }
